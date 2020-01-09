@@ -1,7 +1,7 @@
 const clockContainer = document.querySelector(".clock");
 const clockTitle = clockContainer.querySelector("h1");
-const messageContainer = document.querySelector(".message");
-const messageTitle = messageContainer.querySelector("h2");
+const greetingContainer = document.querySelector(".greeting");
+//const greetingTitle = greetingContainer.querySelector("h2");
 
 function getTime() {
     const now = new Date();
@@ -12,27 +12,48 @@ function getTime() {
     clockTitle.innerHTML += (second < 10) ? `:0${second}` : `:${second}`;
 }
 
-function getMessage() {
+function setGreeting() {
+    const form = document.createElement("form");
+    const input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("placeholder","What is your name");
+    form.appendChild(input);
+    greetingContainer.appendChild(form);
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert(input.value);
+    });
+}
+
+/* function getGreeting() {
     const now = new Date();
     const hour = now.getHours();  
-    let message = "";
+    let greeting = "";
 
     if(hour >= 5 && hour < 12) {
-        message = "Good morning!,";
+        greeting = "Good morning!,";
     } else if (hour >= 12 && hour < 17) {
-        message = "Good afternoon!,";
+        greeting = "Good afternoon!,";
     } else {
-        message = "Good evening!,";
+        greeting = "Good evening!,";
     }
 
-    messageTitle.innerHTML = `${message} JangTroubleTa.`;
-}
+    greetingTitle.innerHTML = `${greeting} JangTroubleTa.`;
+} */
 
 function init() {
     getTime();
-    getMessage();
+
+    if(localStorage.getItem("name") !== null) {
+        getGreeting()
+    } else {
+        setGreeting() 
+    }
 }
 
 init();
 setInterval(getTime, 1000);
-setInterval(getMessage, 1000*60*60);
+if(localStorage.getItem("name") !== null) {
+    setInterval(getGreeting, 1000*60*60);
+}
