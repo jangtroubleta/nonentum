@@ -11,11 +11,13 @@ function getTime() {
     clockTitle.innerHTML += (second < 10) ? `:0${second}` : `:${second}`;
 }
 
-function setGreeting() {
+function setGreeting(user = null) {
     const form = document.createElement("form");
     const input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("placeholder","What is your name");
+    input.value = user;
+    localStorage.removeItem("currentUser");
     form.appendChild(input);
     greetingContainer.appendChild(form);
 
@@ -49,8 +51,7 @@ function getGreeting() {
 
     button.addEventListener("click", () => {
         greetingContainer.removeChild(h3);
-        localStorage.removeItem("currentUser");
-        setGreeting();
+        setGreeting(localStorage.getItem("currentUser"));
     });
 }
 
