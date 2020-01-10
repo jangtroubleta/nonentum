@@ -1,7 +1,6 @@
 const clockContainer = document.querySelector(".clock");
 const clockTitle = clockContainer.querySelector("h1");
 const greetingContainer = document.querySelector(".greeting");
-//const greetingTitle = greetingContainer.querySelector("h2");
 
 function getTime() {
     const now = new Date();
@@ -22,13 +21,17 @@ function setGreeting() {
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        alert(input.value);
+        localStorage.setItem("currentUser", input.value.trim());
+        greetingContainer.removeChild(form);
+        getGreeting();
     });
 }
 
-/* function getGreeting() {
+function getGreeting() {
     const now = new Date();
-    const hour = now.getHours();  
+    const hour = now.getHours();
+    const h3 = document.createElement("h3");
+    const button = document.createElement("button");
     let greeting = "";
 
     if(hour >= 5 && hour < 12) {
@@ -39,13 +42,22 @@ function setGreeting() {
         greeting = "Good evening!,";
     }
 
-    greetingTitle.innerHTML = `${greeting} JangTroubleTa.`;
-} */
+    h3.innerHTML = `${greeting} ${localStorage.getItem("currentUser")}.`;
+    greetingContainer.appendChild(h3);
+    button.innerHTML = "edit";
+    h3.appendChild(button);
+
+    button.addEventListener("click", () => {
+        greetingContainer.removeChild(h3);
+        localStorage.removeItem("currentUser");
+        setGreeting();
+    });
+}
 
 function init() {
     getTime();
 
-    if(localStorage.getItem("name") !== null) {
+    if(localStorage.getItem("currentUser") !== null) {
         getGreeting()
     } else {
         setGreeting() 
@@ -54,6 +66,6 @@ function init() {
 
 init();
 setInterval(getTime, 1000);
-if(localStorage.getItem("name") !== null) {
+if(localStorage.getItem("currentUser") !== null) {
     setInterval(getGreeting, 1000*60*60);
 }
