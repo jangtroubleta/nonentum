@@ -2,6 +2,12 @@ const clockContainer = document.querySelector(".clock");
 const clockTitle = clockContainer.querySelector("h1");
 const greetingContainer = document.querySelector(".greeting");
 const focusContainer = document.querySelector(".focus");
+const weatherContainer = document.querySelector(".weather");
+
+const CURRENTUSER = "currentUser";
+const CURRENTFOCUS = "currentFocus";
+const COORDS = "coords";
+const API_KEY = "c0d27ef77a61066e45d69cb95de884af";
 
 function getTime() {
     const now = new Date();
@@ -18,13 +24,13 @@ function setGreeting(user = null) {
     input.setAttribute("type", "text");
     input.setAttribute("placeholder","What is your name?");
     input.value = user;
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem(CURRENTUSER);
     form.appendChild(input);
     greetingContainer.appendChild(form);
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        localStorage.setItem("currentUser", input.value.trim());
+        localStorage.setItem(CURRENTUSER, input.value.trim());
         greetingContainer.removeChild(form);
         getGreeting();
     });
@@ -46,14 +52,14 @@ function getGreeting() {
         greeting = "Good evening!,";
     }
 
-    h2.innerHTML = `${greeting} ${localStorage.getItem("currentUser")}.`;
+    h2.innerHTML = `${greeting} ${localStorage.getItem(CURRENTUSER)}.`;
     greetingContainer.appendChild(h2);
     button.innerHTML = "edit";
     h2.appendChild(button);
 
     button.addEventListener("click", () => {
         greetingContainer.removeChild(h2);
-        setGreeting(localStorage.getItem("currentUser"));
+        setGreeting(localStorage.getItem(CURRENTUSER));
     });
 }
 
@@ -73,7 +79,7 @@ function setFocus() {
     
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        localStorage.setItem("currentFocus", input.value.trim());
+        localStorage.setItem(CURRENTFOCUS, input.value.trim());
         focusContainer.removeChild(form);
         getFocus();
     });
@@ -85,7 +91,7 @@ function getFocus() {
     const input = document.createElement("input");
 
     input.setAttribute("type", "checkbox");
-    h3.innerHTML = localStorage.getItem("currentFocus");
+    h3.innerHTML = localStorage.getItem(CURRENTFOCUS);
     button.innerHTML = "X";
 
     focusContainer.appendChild(input);
@@ -100,19 +106,70 @@ function getFocus() {
         focusContainer.removeChild(input);
         focusContainer.removeChild(button);
         focusContainer.removeChild(h3);
-        localStorage.removeItem("currentFocus");
+        localStorage.removeItem(CURRENTFOCUS);
         setFocus();
     });
 }
 
+function handleGeoSucces(position) {
+    console.log(position);
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const coordsObj = {
+        latitude,
+        longitude
+    };
+
+    localStorage.setItem(COORDS, JSON.stringify(coordsObj));
+    getWeather(latitude, longitude);
+}
+
+function handleGeoError() {
+    console.log("Can't access geo location");
+}
+
+function askForCoords() {
+    navigator.geolocation.getCurrentPosition(handleGeoSucces, handleGeoError);
+}
+
+function getWeather(lat, lon) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
+    .then((res) => {
+        return res.json();
+    })
+    .then((json) => {
+        console.log(json);
+        const img = document.createElement("img");
+        const span = document.createElement("span");
+
+        img.setAttribute("src", `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`);
+        span.innerHTML = `${Math.round(json.main.temp)} &ordm;`;
+        //지역 불러오기
+
+        weatherContainer.appendChild(img);
+        weatherContainer.appendChild(span);
+    });
+}
+
+function loadCoords() {
+    const loadedCoords = localStorage.getItem(COORDS);
+    if (loadedCoords === null) {
+        askForCoords();
+    } else {
+        const parsedCoords = JSON.parse(loadedCoords);
+        getWeather(parsedCoords.latitude, parsedCoords.longitude);
+    }
+}
+
 function init() {
     getTime();
-    ( localStorage.getItem("currentUser") ) !== null ? getGreeting() : setGreeting();
-    ( localStorage.getItem("currentFocus")) !== null ? getFocus() : setFocus();
+    loadCoords();
+    ( localStorage.getItem(CURRENTUSER) ) !== null ? getGreeting() : setGreeting();
+    ( localStorage.getItem(CURRENTFOCUS)) !== null ? getFocus() : setFocus();
 }
 
 init();
 setInterval(getTime, 1000);
-if (localStorage.getItem("currentUser") !== null) {
+if (localStorage.getItem(CURRENTUSER) !== null) {
     setInterval(getGreeting, 1000*60*60);
 }
