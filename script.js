@@ -3,6 +3,8 @@ const clockTitle = clockContainer.querySelector("h1");
 const greetingContainer = document.querySelector(".greeting");
 const focusContainer = document.querySelector(".focus");
 const weatherContainer = document.querySelector(".weather");
+const weatItem1 = weatherContainer.querySelector(".weatItem1");
+const weatItem2 = weatherContainer.querySelector(".weatItem2");
 
 const CURRENTUSER = "currentUser";
 const CURRENTFOCUS = "currentFocus";
@@ -140,14 +142,25 @@ function getWeather(lat, lon) {
     .then((json) => {
         console.log(json);
         const img = document.createElement("img");
-        const span = document.createElement("span");
+        let span = document.createElement("span");
+        let td = document.createElement("td");
 
         img.setAttribute("src", `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`);
-        span.innerHTML = `${Math.round(json.main.temp)} &ordm;`;
-        //지역 불러오기
+        span.innerHTML = `${Math.round(json.main.temp)} &ordm;C`;
+        
+        td.appendChild(img)
+        weatItem1.appendChild(td);
+        td = document.createElement("td");
+        td.appendChild(span);
+        weatItem1.appendChild(td);
 
-        weatherContainer.appendChild(img);
-        weatherContainer.appendChild(span);
+        span = document.createElement("span");
+        span.innerHTML = json.name;
+
+        td = document.createElement("td");
+        td.setAttribute("colspan", "2");
+        td.appendChild(span);
+        weatItem2.appendChild(td);
     });
 }
 
