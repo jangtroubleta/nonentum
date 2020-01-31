@@ -5,11 +5,16 @@ const focusContainer = document.querySelector(".focus");
 const weatherContainer = document.querySelector(".weather");
 const weatItem1 = weatherContainer.querySelector(".weatItem1");
 const weatItem2 = weatherContainer.querySelector(".weatItem2");
+const links = document.querySelector(".links");
+const overlay = document.querySelector(".modal_overlay");
+const modal = document.querySelector(".links_modal");
 
 const CURRENTUSER = "currentUser";
 const CURRENTFOCUS = "currentFocus";
 const COORDS = "coords";
+const LINETHROUGH_CLASS = "line-through";
 const API_KEY = "c0d27ef77a61066e45d69cb95de884af";
+const HEDDEN_CLASS = "hidden";
 
 function getTime() {
     const now = new Date();
@@ -101,7 +106,7 @@ function getFocus() {
     focusContainer.appendChild(button);
 
     input.addEventListener("click", () => {
-        (input.checked) ?  h3.classList.toggle("line-through") : h3.classList.toggle("line-through");
+        h3.classList.toggle(LINETHROUGH_CLASS);
     });
 
     button.addEventListener("click", () => {
@@ -140,7 +145,7 @@ function getWeather(lat, lon) {
         return res.json();
     })
     .then((json) => {
-        console.log(json);
+        // console.log(json);
         const img = document.createElement("img");
         let span = document.createElement("span");
         let td = document.createElement("td");
@@ -170,9 +175,18 @@ function loadCoords() {
         askForCoords();
     } else {
         const parsedCoords = JSON.parse(loadedCoords);
+        // console.log(parsedCoords);
         getWeather(parsedCoords.latitude, parsedCoords.longitude);
     }
 }
+
+links.addEventListener("click", () => {
+    modal.classList.toggle(HEDDEN_CLASS);
+});
+
+overlay.addEventListener("click", () => {
+    modal.classList.toggle(HEDDEN_CLASS);
+});
 
 function init() {
     getTime();
