@@ -7,7 +7,9 @@ const weatItem1 = weatherContainer.querySelector(".weatItem1");
 const weatItem2 = weatherContainer.querySelector(".weatItem2");
 const links = document.querySelector(".links");
 const overlay = document.querySelector(".modal_overlay");
-const modal = document.querySelector(".links_modal");
+const linksModal = document.querySelector(".links_modal");
+const todo = document.querySelector(".todo");
+const todoModal = document.querySelector(".todo_modal");
 
 const CURRENTUSER = "currentUser";
 const CURRENTFOCUS = "currentFocus";
@@ -181,11 +183,15 @@ function loadCoords() {
 }
 
 links.addEventListener("click", () => {
-    modal.classList.toggle(HEDDEN_CLASS);
+    linksModal.classList.toggle(HEDDEN_CLASS);
 });
 
 overlay.addEventListener("click", () => {
-    modal.classList.toggle(HEDDEN_CLASS);
+    linksModal.classList.toggle(HEDDEN_CLASS);
+});
+
+todo.addEventListener("click", () => {
+    todoModal.classList.toggle(HEDDEN_CLASS);
 });
 
 function init() {
