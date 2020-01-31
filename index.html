@@ -6,48 +6,59 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="links">links</button>
-    <div class="links_modal hidden">
-        <div class="modal_overlay"></div>
-        <div class="modal_content">
-            <div class="chrome_tab">Chrome Tab</div>
-            <div class="apps">Apps</div>
-            <div class="new_link">New Link</div>
+    <header>
+        <div class="header_left">
+            <button class="links">Links</button>
+            <div class="links_modal hidden">
+                <div class="links_modal_overlay"></div>
+                <div class="links_modal_content">
+                    <div class="chrome_tab">Chrome Tab</div>
+                    <div class="apps">Apps</div>
+                    <div class="new_link">New Link</div>
+                </div>
+            </div>
+            <div class="search">
+                <form action="http://www.google.co.kr/search" method="get">
+                    <input type=text name=q placeholder="Google Search">
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="search">
-        <form action="http://www.google.co.kr/search" method="get">
-            <input type=text name=q placeholder="Google Search">
-        </form>
-    </div>
-    <div class="weather">
-        <table>
-            <tr class="weatItem1">
-
-            </tr>
-            <tr class="weatItem2">
-
-            </tr>
-        </table>
-    </div>
-    <div class="clock">
-        <h1>00:00:00</h1>
-    </div>
-    <div class="greeting">
-    </div>
-    <div class="focus">
-    </div>
-    <button class="todo">Todo</button>
-    <div class="todo_modal hidden">
-        <div class="modal_content">
-            <h1>Today</h1>
-            <ul>
-                <li>할일1</li>
-                <li>할일2</li>
-                <li>할일3</li>
-            </ul>
+        <div class="header_right">
+            <div class="weather">
+                <table>
+                    <tr class="weatItem1">
+        
+                    </tr>
+                    <tr class="weatItem2">
+        
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
+    </header>
+    <article>
+        <div class="clock">
+            <h1>00:00:00</h1>
+        </div>
+        <div class="greeting">
+        </div>
+        <div class="focus">
+        </div>
+    </article>
+    <footer>
+        <button class="todo">Todo</button>
+        <div class="todo_modal hidden">
+            <div class="todo_modal_overlay"></div>
+            <div class="todo_modal_content">
+                <h1>Today</h1>
+                <ul>
+                    <li>할일1</li>
+                    <li>할일2</li>
+                    <li>할일3</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>

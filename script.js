@@ -6,9 +6,10 @@ const weatherContainer = document.querySelector(".weather");
 const weatItem1 = weatherContainer.querySelector(".weatItem1");
 const weatItem2 = weatherContainer.querySelector(".weatItem2");
 const links = document.querySelector(".links");
-const overlay = document.querySelector(".modal_overlay");
+const linksOverlay = document.querySelector(".links_modal_overlay");
 const linksModal = document.querySelector(".links_modal");
 const todo = document.querySelector(".todo");
+const todoOverlay = document.querySelector(".todo_modal_overlay");
 const todoModal = document.querySelector(".todo_modal");
 
 const CURRENTUSER = "currentUser";
@@ -96,25 +97,28 @@ function setFocus() {
 
 function getFocus() {
     const h3 = document.createElement("h3");
+    const h2 = document.createElement("h2");
     const button = document.createElement("button");
     const input = document.createElement("input");
 
+    h3.innerHTML = "TODAY";
     input.setAttribute("type", "checkbox");
-    h3.innerHTML = localStorage.getItem(CURRENTFOCUS);
+    h2.innerHTML = localStorage.getItem(CURRENTFOCUS);
     button.innerHTML = "X";
 
-    focusContainer.appendChild(input);
     focusContainer.appendChild(h3);
+    focusContainer.appendChild(input);
+    focusContainer.appendChild(h2);
     focusContainer.appendChild(button);
 
     input.addEventListener("click", () => {
-        h3.classList.toggle(LINETHROUGH_CLASS);
+        h2.classList.toggle(LINETHROUGH_CLASS);
     });
 
     button.addEventListener("click", () => {
         focusContainer.removeChild(input);
         focusContainer.removeChild(button);
-        focusContainer.removeChild(h3);
+        focusContainer.removeChild(h2);
         localStorage.removeItem(CURRENTFOCUS);
         setFocus();
     });
@@ -186,11 +190,15 @@ links.addEventListener("click", () => {
     linksModal.classList.toggle(HEDDEN_CLASS);
 });
 
-overlay.addEventListener("click", () => {
+linksOverlay.addEventListener("click", () => {
     linksModal.classList.toggle(HEDDEN_CLASS);
 });
 
 todo.addEventListener("click", () => {
+    todoModal.classList.toggle(HEDDEN_CLASS);
+});
+
+todoOverlay.addEventListener("click", () => {
     todoModal.classList.toggle(HEDDEN_CLASS);
 });
 
